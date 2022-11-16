@@ -5,6 +5,7 @@ require_once "vendor/autoload.php";
 use App\Company;
 use App\CsvProcessor;
 use App\CompanySearch;
+use App\DisplayFunctions;
 
 $records = new CsvProcessor('register.csv', ';', 0);
 
@@ -13,14 +14,13 @@ $search = new CompanySearch();
 
 $totalCompanyAmount = null;
 
-displayOptions();
+DisplayFunctions::displayOptions();
 $userChoice = readline();
 
 switch ($userChoice) {
     case -1:
         echo "Counting...";
         $totalCompanyAmount = $records->getCsv()->count();
-
         echo PHP_EOL;
         echo "Finished counting!" . PHP_EOL;
         echo "There are " . $totalCompanyAmount . " companies in the list!" . PHP_EOL;
@@ -62,7 +62,7 @@ switch ($userChoice) {
         }
         $searchResultAsCompany = new Company($searchResult['regcode'], $searchResult['name'], $searchResult['type'], $searchResult['registered'], $searchResult['terminated'], $searchResult['closed'], $searchResult['address']);
 
-        displayCompanies($searchResultAsCompany);
+        DisplayFunctions::displayCompanies($searchResultAsCompany);
         break;
 
     case 3:
@@ -74,6 +74,6 @@ switch ($userChoice) {
         foreach($records->getAllRecords() as $record) {
             $company = new Company($record['regcode'], $record['name'], $record['type'], $record['registered'], $record['terminated'], $record['closed'], $record['address']);
 
-            displayCompanies($company);
+            DisplayFunctions::displayCompanies($company);
         }
 }
